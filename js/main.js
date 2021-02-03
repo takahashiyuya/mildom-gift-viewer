@@ -105,9 +105,9 @@ $(function () {
         element.velocity({
             translateY: movey+"px"
         },{
-            duration: 2000,
+            duration: 4000,
             easing: "ease-in",
-            delay: 1000 * Math.random(),
+            delay: 1500 * Math.random(),
             complete: function(e) { 
                 element.remove();
             }
@@ -127,9 +127,9 @@ $(function () {
         element.velocity({
             translateY: "-" + elm_height + "px"
         },{
-            duration: 2000,
+            duration: 4000,
             easing: "ease-out",
-            delay: 1000 * Math.random(),
+            delay: 1500 * Math.random(),
             complete: function(e) {
                 element.remove();
             }
