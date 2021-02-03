@@ -5,7 +5,7 @@ $(function () {
 
     // 効果音ファイルパス名
     // 音声を鳴らさない場合は 空文字 or null に設定
-    const sound_file = "./audio/effect.mp3";
+    const sound_file = "./audio/Onmtp-Inspiration02-2.mp3";
 
     // 画像を表示する DIV を取得
     const image_box = $('#image_box');
