@@ -12,6 +12,8 @@ $(function () {
 
     // 音声を表示する AUDIO を取得
     const audio_box = $('#audio_box');
+
+    const giftKusaId = 1114;
     
     // ギフト情報
     var gift_map = {}
@@ -63,10 +65,17 @@ $(function () {
         // 対応可能なギフトである場合
         if (gift_map[gift_id]) {         
             for (var i=0; i<count; i++){
-               const image = $("<img/>").addClass("stamp");
-                image.bind('load', function () {
-                    showImage(image, complete_function); });
-                image.attr("src", gift_map[gift_id].url);    
+                const image = $("<img/>").addClass("stamp");
+                if (json.giftId === giftKusaId) {
+                    image.bind('load', function () {
+                        showKusaImage(image, complete_function);
+                    });
+                } else {
+                    image.bind('load', function () {
+                        showImage(image, complete_function);
+                    });
+                }
+                image.attr("src", gift_map[gift_id].url);
             }
         }
     }
@@ -98,12 +107,35 @@ $(function () {
         },{
             duration: 2000,
             easing: "ease-in",
-            delay: 2000 * Math.random(),
+            delay: 1000 * Math.random(),
             complete: function(e) { 
                 element.remove();
             }
         });        
     }
+
+    function showKusaImage(element, complete_function) {
+        element.css("left","200%");
+        element.appendTo(image_box);
+        let elm_width = element.outerWidth(true);
+        let elm_height = element.outerHeight(true);
+        const ib_width = image_box.outerWidth(true);
+        let originx = (ib_width - elm_width) * Math.random();
+        element.css("left",originx+"px");
+        element.css("bottom", "-" + elm_height + "px");
+
+        element.velocity({
+            translateY: "-" + elm_height + "px"
+        },{
+            duration: 2000,
+            easing: "ease-out",
+            delay: 1000 * Math.random(),
+            complete: function(e) {
+                element.remove();
+            }
+        });
+    }
+
 
     //　サンドエフェクト再生準備 
     function initializeSoundEffect() {
