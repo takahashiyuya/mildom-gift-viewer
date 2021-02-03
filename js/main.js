@@ -1,7 +1,7 @@
 $(function () {
 
     // 対象者の Mildom ID
-    const mildom_id = 10000000;
+    const mildom_id = 10169353;
 
     // 効果音ファイルパス名
     // 音声を鳴らさない場合は 空文字 or null に設定
