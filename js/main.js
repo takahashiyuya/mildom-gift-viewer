@@ -68,7 +68,7 @@ $(function () {
                 const image = $("<img/>").addClass("stamp");
                 if (json.giftId === giftKusaId) {
                     image.bind('load', function () {
-                        showKusaImage(image, complete_function);
+                        growUpAnimation(image, complete_function);
                     });
                 } else {
                     image.bind('load', function () {
@@ -114,7 +114,12 @@ $(function () {
         });        
     }
 
-    function showKusaImage(element, complete_function) {
+    /**
+     * 下からニュ〜〜って草が生えるイメージのアニメーション
+     * @param element
+     * @param complete_function
+     */
+    function growUpAnimation(element, complete_function) {
         element.css("left","200%");
         element.appendTo(image_box);
         let elm_width = element.outerWidth(true);
