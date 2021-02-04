@@ -13,10 +13,12 @@ $(function () {
     // 音声を表示する AUDIO を取得
     const audio_box = $('#audio_box');
 
-    const giftKusaId = 1114;
-    
+    const animations = {
+        1114: growUpAnimation
+    };
+
     // ギフト情報
-    var gift_map = {}
+    const gift_map = [];
 
     /** 
      * ギフト情報の取得
@@ -66,9 +68,10 @@ $(function () {
         if (gift_map[gift_id]) {         
             for (var i=0; i<count; i++){
                 const image = $("<img/>").addClass("stamp");
-                if (gift_id === giftKusaId) {
+                const animation = animations[gift_id];
+                if (animation) {
                     image.bind('load', function () {
-                        growUpAnimation(image, complete_function);
+                        animation(image, complete_function);
                     });
                 } else {
                     image.bind('load', function () {
@@ -106,7 +109,7 @@ $(function () {
             translateY: movey+"px"
         },{
             duration: 5000,
-            easing: "ease-in",
+            easing: "easeInSine",
             delay: 1500 * Math.random(),
             complete: function(e) {
                 element.remove();
