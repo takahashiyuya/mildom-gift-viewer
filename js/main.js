@@ -66,7 +66,7 @@ $(function () {
         if (gift_map[gift_id]) {         
             for (var i=0; i<count; i++){
                 const image = $("<img/>").addClass("stamp");
-                if (json.giftId === giftKusaId) {
+                if (gift_id === giftKusaId) {
                     image.bind('load', function () {
                         growUpAnimation(image, complete_function);
                     });
@@ -108,7 +108,7 @@ $(function () {
             duration: 4000,
             easing: "ease-in",
             delay: 1500 * Math.random(),
-            complete: function(e) { 
+            complete: function(e) {
                 element.remove();
             }
         });        
@@ -153,6 +153,7 @@ $(function () {
     // サウンドエフェクト再生
     function playSoundEffect(){
         if (sound_file) {
+            audio_box.get(0).currentTime = 0;
             audio_box.get(0).play();
         }
     }
