@@ -55,7 +55,7 @@ $(function () {
         // ギフトが送信された場合のみ対応
         if (json.cmd == "onGift") {
             createImage(json.giftId, json.count, complete_function);
-            playSoundEffect();
+            playSoundEffect(json.count);
         }
 
         complete_function()
@@ -162,10 +162,19 @@ $(function () {
     }
 
     // サウンドエフェクト再生
-    function playSoundEffect(){
+    function playSoundEffect(count){
         if (sound_file) {
-            audio_box.get(0).currentTime = 0;
-            audio_box.get(0).play();
+            let counter = 0;
+            const timerId = setInterval(function () {
+                const audio = audio_box.get(0);
+                audio.currentTime = 0;
+                audio.play();
+
+                counter++;
+                if (count <= counter) {
+                    clearInterval(timerId)
+                }
+            }, 60);
         }
     }
 
