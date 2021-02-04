@@ -105,7 +105,7 @@ $(function () {
         element.velocity({
             translateY: movey+"px"
         },{
-            duration: 4000,
+            duration: 5000,
             easing: "ease-in",
             delay: 1500 * Math.random(),
             complete: function(e) {
@@ -132,11 +132,19 @@ $(function () {
         element.velocity({
             translateY: "-" + elm_height + "px"
         },{
-            duration: 4000,
+            duration: 5000,
             easing: "ease-out",
             delay: 1500 * Math.random(),
             complete: function(e) {
-                element.remove();
+                element.velocity({
+                    opacity: 0
+                },{
+                    delay: 5000,
+                    easing: "ease",
+                    complete: function(e) {
+                        element.remove();
+                    }
+                });
             }
         });
     }
