@@ -3,21 +3,20 @@ $(function () {
     // 対象者の Mildom ID
     const mildom_id = 10169353;
 
-    // 効果音ファイルパス名
-    // 音声を鳴らさない場合は 空文字 or null に設定
-    const sound_file = "./audio/Onmtp-Inspiration02-2.mp3";
+    // 音
+    const $audioBox = $('#audioBox');
+    const defaultSoundFile = "./audio/Onmtp-Inspiration02-2.mp3";
+    const sounds = {
+        1115: './audio/cheers_and_crap.mp3'
+    };
 
-    // 画像を表示する DIV を取得
+    // 画像
     const image_box = $('#image_box');
-
-    // 音声を表示する AUDIO を取得
-    const audio_box = $('#audio_box');
-
     const animations = {
         1114: growUpAnimation
     };
 
-    // ギフト情報
+    // ギフト
     const gift_map = [];
 
     /** 
@@ -55,7 +54,7 @@ $(function () {
         // ギフトが送信された場合のみ対応
         if (json.cmd == "onGift") {
             createImage(json.giftId, json.count, complete_function);
-            playSoundEffect(json.count);
+            playSoundEffect(json.giftId, json.count);
         }
 
         complete_function()
@@ -152,34 +151,33 @@ $(function () {
         });
     }
 
+    /**
+     * ギフトの音再生
+     *
+     * @param giftId
+     * @param count
+     */
+    function playSoundEffect(giftId, count){
+        const $audio = $('<audio/>').get(0);
+        $audioBox.append($audio);
+        $audio.src = sounds[giftId] || defaultSoundFile;
+        $audio.volume = 0.2;
 
-    //　サンドエフェクト再生準備 
-    function initializeSoundEffect() {
-        if (sound_file) {
-            audio_box.attr("src", sound_file);  
-            audio_box.get(0).volume = 0.2;
-        }
-    }
+        let counter = 0;
+        const timerId = setInterval(function () {
+            $audio.currentTime = 0;
+            $audio.play();
 
-    // サウンドエフェクト再生
-    function playSoundEffect(count){
-        if (sound_file) {
-            let counter = 0;
-            const timerId = setInterval(function () {
-                const audio = audio_box.get(0);
-                audio.currentTime = 0;
-                audio.play();
+            counter++;
+            if (count <= counter) {
+                clearInterval(timerId);
+            }
+        }, 100);
 
-                counter++;
-                if (count <= counter) {
-                    clearInterval(timerId)
-                }
-            }, 60);
-        }
+        $audio.remove();
     }
 
     getGiftInfo();
-    initializeSoundEffect();
     startToLissten(eventListenner);
     startConnectToMildom(mildom_id);
 });
