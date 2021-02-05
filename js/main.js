@@ -52,7 +52,7 @@ $(function () {
         console.log(json);
 
         // ギフトが送信された場合のみ対応
-        if (json.cmd == "onGift") {
+        if (json.cmd === "onGift") {
             createImage(json.giftId, json.count, complete_function);
             playSoundEffect(json.giftId, json.count);
         }
