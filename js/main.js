@@ -1,7 +1,7 @@
 $(function () {
 
     // 対象者の Mildom ID
-    const mildom_id = 10169353;
+    const mildomId = 10169353;
 
     // 音
     const $audioBox = $('#audioBox');
@@ -11,7 +11,7 @@ $(function () {
     };
 
     // 画像
-    const image_box = $('#image_box');
+    const $imageBox = $('#imageBox');
     const animations = {
         1114: growUpAnimation
     };
@@ -93,13 +93,13 @@ $(function () {
 
         // 先に追加してサイズを把握
         element.css("left",+200+"%");
-        element.appendTo(image_box);
+        element.appendTo($imageBox);
         var elm_width = element.outerWidth(true);
         var elm_height = element.outerHeight(true);
 
         // 表示させている幅を取得
-        const ib_width = image_box.outerWidth(true);
-        const ib_height = image_box.outerHeight(true);
+        const ib_width = $imageBox.outerWidth(true);
+        const ib_height = $imageBox.outerHeight(true);
 
         var movey = (ib_height + elm_height);
         var originx = (ib_width - elm_width) * Math.random();
@@ -129,10 +129,10 @@ $(function () {
      */
     function growUpAnimation(element, complete_function) {
         element.css("left","200%");
-        element.appendTo(image_box);
+        element.appendTo($imageBox);
         let elm_width = element.outerWidth(true);
         let elm_height = element.outerHeight(true);
-        const ib_width = image_box.outerWidth(true);
+        const ib_width = $imageBox.outerWidth(true);
         let originx = (ib_width - elm_width) * Math.random();
         element.css("left",originx+"px");
         element.css("bottom", "-" + elm_height + "px");
@@ -185,5 +185,5 @@ $(function () {
 
     getGiftInfo();
     startToLissten(eventListenner);
-    startConnectToMildom(mildom_id);
+    startConnectToMildom(mildomId);
 });
