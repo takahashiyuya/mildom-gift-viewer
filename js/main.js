@@ -5,14 +5,15 @@ $(function () {
 
     // 音
     const $audioBox = $('#audioBox');
-    const defaultSoundFile = "./audio/Onmtp-Inspiration02-2.mp3";
-    const sounds = {
-        1115: './audio/cheers_and_crap.mp3'
+    const defaultSoundFile = "./audio/men_iei.mp3";
+    const soundsMap = {
+        1115: './audio/cheers_and_crap.mp3',
+        1116: './audio/men_iyaho.mp3'
     };
 
     // 画像
     const $imageBox = $('#imageBox');
-    const animations = {
+    const animationsMap = {
         1114: growUpAnimation
     };
 
@@ -73,16 +74,10 @@ $(function () {
         if (gift_map[gift_id]) {         
             for (var i=0; i<count; i++){
                 const image = $("<img/>").addClass("stamp");
-                const animation = animations[gift_id];
-                if (animation) {
-                    image.bind('load', function () {
-                        animation(image, complete_function);
-                    });
-                } else {
-                    image.bind('load', function () {
-                        showImage(image, complete_function);
-                    });
-                }
+                const animation = animationsMap[gift_id] || showImage;
+                image.bind('load', function () {
+                    animation(image, complete_function);
+                });
                 image.attr("src", gift_map[gift_id].url);
             }
         }
@@ -166,7 +161,7 @@ $(function () {
     function playSoundEffect(giftId, count){
         const $audio = $('<audio/>').get(0);
         $audioBox.append($audio);
-        $audio.src = sounds[giftId] || defaultSoundFile;
+        $audio.src = soundsMap[giftId] || defaultSoundFile;
         $audio.volume = 0.2;
 
         let counter = 0;
