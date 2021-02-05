@@ -57,6 +57,12 @@ $(function () {
             playSoundEffect(json.giftId, json.count);
         }
 
+        // for dev
+        // const devGiftId = 1114,
+        //       devCount = 9;
+        // createImage(devGiftId, devCount, complete_function);
+        // playSoundEffect(devGiftId, devCount);
+
         complete_function()
     }
 
