@@ -5,7 +5,7 @@ $(function () {
 
     // 音
     const $audioBox = $('#audioBox');
-    const defaultSoundFiles = ['./audio/men_iei.mp3'];
+    const defaultSounds = ['./audio/men_iei.mp3'];
     const soundsMap = {
         1115: ['./audio/cheers_and_crap.mp3'],
         1116: ['./audio/men_iyaho.mp3']
@@ -14,37 +14,40 @@ $(function () {
     // 画像
     const $imageBox = $('#imageBox');
     const animationsMap = {
-        1114: growUpAnimation
+        1114: [growUpAnimation]
     };
 
     // ギフト
     const gift_map = [];
 
-    /** 
+    /**
      * ギフト情報の取得
      * (Mildom の API を直接コールする)
      */
     function getGiftInfo() {
         $.ajax({
-          type: "get",
-          url: "https://cloudac.mildom.com/nonolive/gappserv/gift/find",
+            type: "get",
+            url: "https://cloudac.mildom.com/nonolive/gappserv/gift/find",
         })
-        .then(function (result) {
-            for (gift in result.body.models) {
-                let model = result.body.models[gift];
-                gift_map[model.gift_id] = {
-                    "price": model.price,
-                    "name": model.name,
-                    "url": model.pic }
-            }
-            for (gift in result.body.pack) {
-                let model = result.body.pack[gift];
-                gift_map[model.gift_id] = {
-                    "price": model.price,
-                    "name": model.name,
-                    "url": model.pic }
-            }
-        }, function () {});
+            .then(function (result) {
+                for (gift in result.body.models) {
+                    let model = result.body.models[gift];
+                    gift_map[model.gift_id] = {
+                        "price": model.price,
+                        "name": model.name,
+                        "url": model.pic
+                    }
+                }
+                for (gift in result.body.pack) {
+                    let model = result.body.pack[gift];
+                    gift_map[model.gift_id] = {
+                        "price": model.price,
+                        "name": model.name,
+                        "url": model.pic
+                    }
+                }
+            }, function () {
+            });
     }
 
 
@@ -59,8 +62,8 @@ $(function () {
         }
 
         // for dev
-        // const devGiftId = 1116,
-        //       devCount = 9;
+        // const devGiftId = 1114,
+        //     devCount = 9;
         // createImage(devGiftId, devCount, complete_function);
         // playSoundEffect(devGiftId, devCount);
 
@@ -69,12 +72,11 @@ $(function () {
 
     // Img タグの生成
     function createImage(gift_id, count, complete_function) {
-
         // 対応可能なギフトである場合
-        if (gift_map[gift_id]) {         
-            for (var i=0; i<count; i++){
+        if (gift_map[gift_id]) {
+            for (var i = 0; i < count; i++) {
                 const image = $("<img/>").addClass("stamp");
-                const animation = animationsMap[gift_id] || showImage;
+                const animation = selectAnimation(gift_id);
                 image.bind('load', function () {
                     animation(image, complete_function);
                 });
@@ -87,7 +89,7 @@ $(function () {
     function showImage(element, complete_function) {
 
         // 先に追加してサイズを把握
-        element.css("left",+200+"%");
+        element.css("left", +200 + "%");
         element.appendTo($imageBox);
         var elm_width = element.outerWidth(true);
         var elm_height = element.outerHeight(true);
@@ -101,20 +103,20 @@ $(function () {
         var originy = (-elm_height);
 
         // 改めて設定
-        element.css("left",originx+"px");
-        element.css("top",originy+"px");
-        
+        element.css("left", originx + "px");
+        element.css("top", originy + "px");
+
         // 新規コメントを左に移動
         element.velocity({
-            translateY: movey+"px"
-        },{
+            translateY: movey + "px"
+        }, {
             duration: 5000,
             easing: "easeInSine",
             delay: 1500 * Math.random(),
-            complete: function(e) {
+            complete: function (e) {
                 element.remove();
             }
-        });        
+        });
     }
 
     /**
@@ -123,28 +125,28 @@ $(function () {
      * @param complete_function
      */
     function growUpAnimation(element, complete_function) {
-        element.css("left","200%");
+        element.css("left", "200%");
         element.appendTo($imageBox);
         let elm_width = element.outerWidth(true);
         let elm_height = element.outerHeight(true);
         const ib_width = $imageBox.outerWidth(true);
         let originx = (ib_width - elm_width) * Math.random();
-        element.css("left",originx+"px");
+        element.css("left", originx + "px");
         element.css("bottom", "-" + elm_height + "px");
 
         element.velocity({
             translateY: "-" + elm_height + "px"
-        },{
+        }, {
             duration: 5000,
             easing: "ease-out",
             delay: 1500 * Math.random(),
-            complete: function(e) {
+            complete: function (e) {
                 element.velocity({
                     opacity: 0
-                },{
+                }, {
                     delay: 5000,
                     easing: "ease",
-                    complete: function(e) {
+                    complete: function (e) {
                         element.remove();
                     }
                 });
@@ -158,7 +160,7 @@ $(function () {
      * @param giftId
      * @param count
      */
-    function playSoundEffect(giftId, count){
+    function playSoundEffect(giftId, count) {
         const $audio = $('<audio/>').get(0);
         $audioBox.append($audio);
         $audio.src = selectSound(giftId);
@@ -178,13 +180,27 @@ $(function () {
         $audio.remove();
     }
 
+
+    function selectAnimation(giftId) {
+        const animations = animationsMap[giftId];
+        if (!animations) {
+            return showImage;
+        }
+
+        return pickRandomItem(animations);
+    }
+
     function selectSound(giftId) {
         const sounds = soundsMap[giftId];
         if (!sounds) {
-            return defaultSoundFiles[Math.floor(Math.random() * defaultSoundFiles.length)];
+            return pickRandomItem(defaultSounds);
         }
 
-        return sounds[Math.floor(Math.random() * sounds.length)];
+        return pickRandomItem(sounds);
+    }
+
+    function pickRandomItem(array) {
+        return array[Math.floor(Math.random() * array.length)];
     }
 
     getGiftInfo();
