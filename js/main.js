@@ -3,6 +3,9 @@ $(function () {
     // 対象者の Mildom ID
     const mildomId = 10169353;
 
+    // アプリケーション
+    const $appBox = $('#appBox');
+
     // 音
     const $audioBox = $('#audioBox');
     const defaultSounds = ['./audio/men_iei.mp3'];
@@ -12,13 +15,15 @@ $(function () {
     };
 
     // 画像
-    const $imageBox = $('#imageBox');
     const animationsMap = {
         1114: [growUpAnimation]
     };
 
-    // ギフト
+    // ギフト情報が格納される
     const gift_map = [];
+
+    // コメント
+    const $commentBox = $('#commentBox');
 
     /**
      * ギフト情報の取得
@@ -59,13 +64,47 @@ $(function () {
             playSoundEffect(json.giftId, json.count);
         }
 
+        // コメントを流す
+        if (json.cmd === "onChat") {
+            displayComment(json);
+        }
+
         // for dev
         // const devGiftId = 1114,
-        //     devCount = 9;
+        //     devCount = 1;
         // createImage(devGiftId, devCount, complete_function);
         // playSoundEffect(devGiftId, devCount);
 
         complete_function()
+    }
+
+    function displayComment(data) {
+        const $comment = $('<div class="comment"/>');
+        $comment.text(data.msg);
+        $comment.appendTo($commentBox);
+
+        // ウィンドウとコンテンツの幅を取得
+        const commentWidth = $comment.outerWidth(true);
+        const commentHeight = $comment.outerHeight(true);
+        const appWidth = $appBox.outerWidth(true);
+        const appHeight = $appBox.outerHeight(true);
+        const displayX = -(commentWidth);
+        const displayY = Math.floor((appHeight - commentHeight) * Math.random());
+        const movingDistance = appWidth + commentWidth;
+
+        // 座標設定
+        $comment.css('right', displayX + "px");
+        $comment.css('top', displayY + "px");
+        $comment.velocity({
+            translateX: -(movingDistance) + "px"
+        }, {
+            duration: 7000,
+            easing: 'linear',
+            delay: 1500 * Math.random(),
+            complete: function (e) {
+                $comment.remove();
+            }
+        });
     }
 
     // Img タグの生成
@@ -88,13 +127,13 @@ $(function () {
 
         // 先に追加してサイズを把握
         element.css("left", +200 + "%");
-        element.appendTo($imageBox);
+        element.appendTo($appBox);
         var elm_width = element.outerWidth(true);
         var elm_height = element.outerHeight(true);
 
         // 表示させている幅を取得
-        const ib_width = $imageBox.outerWidth(true);
-        const ib_height = $imageBox.outerHeight(true);
+        const ib_width = $appBox.outerWidth(true);
+        const ib_height = $appBox.outerHeight(true);
 
         var movey = (ib_height + elm_height);
         var originx = (ib_width - elm_width) * Math.random();
@@ -124,10 +163,10 @@ $(function () {
      */
     function growUpAnimation(element, complete_function) {
         element.css("left", "200%");
-        element.appendTo($imageBox);
+        element.appendTo($appBox);
         let elm_width = element.outerWidth(true);
         let elm_height = element.outerHeight(true);
-        const ib_width = $imageBox.outerWidth(true);
+        const ib_width = $appBox.outerWidth(true);
         let originx = (ib_width - elm_width) * Math.random();
         element.css("left", originx + "px");
         element.css("bottom", "-" + elm_height + "px");

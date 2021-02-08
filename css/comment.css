@@ -1,18 +1,4 @@
-/* gift stamp */
-.stamp {
-    position: absolute;
-    height: 300px;
-    width: auto;
-}
-
-.image_box {
-    position: relative;
-    width: 95%;
-    height: 100%;
-    margin: 0px 5% 5px 5px;
-    padding: 0px 0px 0px 5px;
-}
-html{
+html {
     height: 100%;
 }
 
@@ -22,4 +8,31 @@ body {
     margin: 0;
     overflow-x: hidden;
     overflow-y: hidden;
+    font-family: 'Kosugi Maru', sans-serif;
+}
+
+.app_box {
+    position: relative;
+    width: 95%;
+    height: 100%;
+    margin: 0px 5% 5px 5px;
+    padding: 0px 0px 0px 5px;
+}
+
+.stamp {
+    position: absolute;
+    height: 300px;
+    width: auto;
+}
+
+.comment {
+    position: absolute;
+    height: 100px;
+    width: auto;
+    font-size: 72px;
+    color: #292929;
+    -moz-text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
+    -webkit-text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
+    -ms-text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
 }
