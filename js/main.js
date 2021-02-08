@@ -5,10 +5,10 @@ $(function () {
 
     // 音
     const $audioBox = $('#audioBox');
-    const defaultSoundFile = "./audio/men_iei.mp3";
+    const defaultSoundFiles = ['./audio/men_iei.mp3'];
     const soundsMap = {
-        1115: './audio/cheers_and_crap.mp3',
-        1116: './audio/men_iyaho.mp3'
+        1115: ['./audio/cheers_and_crap.mp3'],
+        1116: ['./audio/men_iyaho.mp3']
     };
 
     // 画像
@@ -59,7 +59,7 @@ $(function () {
         }
 
         // for dev
-        // const devGiftId = 1114,
+        // const devGiftId = 1116,
         //       devCount = 9;
         // createImage(devGiftId, devCount, complete_function);
         // playSoundEffect(devGiftId, devCount);
@@ -161,7 +161,7 @@ $(function () {
     function playSoundEffect(giftId, count){
         const $audio = $('<audio/>').get(0);
         $audioBox.append($audio);
-        $audio.src = soundsMap[giftId] || defaultSoundFile;
+        $audio.src = selectSound(giftId);
         $audio.volume = 0.2;
 
         let counter = 0;
@@ -176,6 +176,15 @@ $(function () {
         }, 100);
 
         $audio.remove();
+    }
+
+    function selectSound(giftId) {
+        const sounds = soundsMap[giftId];
+        if (!sounds) {
+            return defaultSoundFiles[Math.floor(Math.random() * defaultSoundFiles.length)];
+        }
+
+        return sounds[Math.floor(Math.random() * sounds.length)];
     }
 
     getGiftInfo();
